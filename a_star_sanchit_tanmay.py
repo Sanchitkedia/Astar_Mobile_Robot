@@ -2,6 +2,8 @@ import sys
 import pygame
 import vidmaker
 import time
+import numpy as np
+import math
 import heapq as hq
 import argparse
 
@@ -11,13 +13,11 @@ def argument_parser():
     args = parser.parse_args()
     return args
 
-def create_pygame_map(display_surface):
+def create_pygame_map(display_surface,clearance,radius):
     # Define the colors
-    GREEN = (0, 255, 0)
+    YELLOW = (255, 255, 0)
     RED = (255, 0, 0)
 
-    radius = 0
-    clearance = 5
     offset = radius + clearance
 
     for x in range(display_surface.get_width()):
@@ -27,23 +27,23 @@ def create_pygame_map(display_surface):
 
             # Equations for rectangle1 using half-plane method
             if (x >= 100-offset and x <= 150+offset) and (y >= 0-offset and y <= 100+offset):
-                display_surface.set_at((x,y), GREEN)
+                display_surface.set_at((x,y), YELLOW)
 
             # Equations for rectangle2 using half-plane method
             if (x >= 100-offset and x <= 150+offset) and (y >= 150-offset and y <= 250+offset):
-                display_surface.set_at((x,y), GREEN)
+                display_surface.set_at((x,y), YELLOW)
 
             # Equations for hexagon using half-plane method
             if (y-(0.578*x)-(-offset*(0.578**2 + 1)**0.5 -123.21))>= 0 and (y-(-0.578*x)-(offset*((-0.578)**2 + 1)**0.5 + 373.21))<= 0 and (y-(0.578*x)-(offset*(0.578**2 + 1)**0.5 + 26.79))<= 0 and (y-(-0.578*x)-(-offset*((-0.578)**2 + 1)**0.5 + 223.21))>= 0 and (x-235+offset) >= 0 and (x-365-offset) <= 0:
-                display_surface.set_at((x,y), GREEN)
+                display_surface.set_at((x,y), YELLOW)
 
             # Equations for triangle using half-plane method
             if (y-(2*x)-(-offset*(2**2 + 1)**0.5 + (-895)))>= 0 and (y-(-2*x)-(offset*((-2)**2 + 1)**0.5 + (1145)))<= 0 and (x-460+offset) >= 0:
-                display_surface.set_at((x,y), GREEN)
+                display_surface.set_at((x,y), YELLOW)
 
             # Equations for boundary using half-plane method
             if(x-offset) <= 0 or (x+offset) >= 600 or (y-offset) <= 0 or (y+offset) >= 250:
-                display_surface.set_at((x,y), GREEN)
+                display_surface.set_at((x,y), YELLOW)
 
          # Drawing Unscaled Obstacles ie. without clearance
 
@@ -81,12 +81,15 @@ def UserInput(obstacle_map):
             print("\nInvalid input. Please enter a value between 0 and 250.")
             start_y = int(input("Enter the y coordinate of the start point: "))
 
+        start_theta = int(input("\nEnter Orientation of the robot at the start point: "))
+
         if obstacle_map.get_at((start_x,pygame.Surface.get_height(obstacle_map)-1 - start_y))[0] == 1:
             break
         print("\nThe start point is inside an obstacle. Please enter a valid start point.")
 
     start.append(start_x)
     start.append(250-start_y)
+    start.append(start_theta*30)
     
     while True:
         goal_x = int(input("\nEnter the x coordinate of the goal point: "))
@@ -98,6 +101,8 @@ def UserInput(obstacle_map):
         while goal_y < 0 or goal_y > 250:
             print("\nInvalid input. Please enter a value between 0 and 250.")
             goal_y = int(input("Enter the y coordinate of the goal point: "))
+        
+        goal_theta = int(input("\nEnter Orientation of the robot at the goal point: "))
 
         if obstacle_map.get_at((goal_x,pygame.Surface.get_height(obstacle_map)-1 - goal_y))[0] == 1:
             break
@@ -105,78 +110,61 @@ def UserInput(obstacle_map):
     
     goal.append(goal_x)
     goal.append(250-goal_y)
+    goal.append(goal_theta*30)
 
-    return start, goal
+    step_size= int(input("\nEnter the desired step size for the robot between 1 and 10: "))
+    while step_size < 1 or step_size > 10:
+            print("\nInvalid input. Please enter a value between 1 and 10.")
+            step_size = int(input("Enter the desired step size for the robot between 1 and 10: "))
 
-def ActionMoveUp(node, obstacle_map):
+    return start, goal, step_size
+
+def ActionMove0(node, obstacle_map, step_size):
     new_node = []
-    new_node.append(node[0])
-    new_node.append(node[1] + 1)
-    
+    new_node.append(node[2] + 0) # Theta
+    new_node.append(node[0] + (step_size*np.cos(new_node[2]))) # X
+    new_node.append(node[1] + (step_size*np.sin(new_node[2]))) # Y
     if (obstacle_map.get_at((new_node[0],pygame.Surface.get_height(obstacle_map) - new_node[1]))[0] == 1):
         return new_node
     else:
         return None
     
-def ActionMoveDown(node, obstacle_map):
+def ActionMove30(node, obstacle_map, step_size):
     new_node = []
-    new_node.append(node[0])
-    new_node.append(node[1] - 1)
+    new_node.append(node[2] + 30) # Theta
+    new_node.append(node[0] + (step_size*np.cos(new_node[2]))) # X
+    new_node.append(node[1] + (step_size*np.sin(new_node[2]))) # Y
     if (new_node[1] >= 0) and (obstacle_map.get_at((new_node[0],pygame.Surface.get_height(obstacle_map) - new_node[1]))[0] == 1):
         return new_node
     else:
         return None
     
-def ActionMoveLeft(node, obstacle_map):
+def ActionMove60(node, obstacle_map, step_size):
     new_node = []
-    new_node.append(node[0] - 1)
-    new_node.append(node[1])
+    new_node.append(node[2] + 60) # Theta
+    new_node.append(node[0] + (step_size*np.cos(new_node[2]))) # X
+    new_node.append(node[1] + (step_size*np.sin(new_node[2]))) # Y
     if (new_node[0] >= 0) and (obstacle_map.get_at((new_node[0],pygame.Surface.get_height(obstacle_map) - new_node[1]))[0] == 1):
         return new_node
     else:
         return None
 
-def ActionMoveRight(node, obstacle_map):
+def ActionMove330(node, obstacle_map, step_size):
     new_node = []
-    new_node.append(node[0] + 1)
-    new_node.append(node[1])
+    new_node.append(node[2] + 330) # Theta
+    new_node.append(node[0] + (step_size*np.cos(new_node[2]))) # X
+    new_node.append(node[1] + (step_size*np.sin(new_node[2]))) # Y
     if (new_node[0] < 600) and (obstacle_map.get_at((new_node[0],pygame.Surface.get_height(obstacle_map) - new_node[1]))[0] == 1):
         return new_node
     else:
         return None
 
-def ActionMoveUpLeft(node, obstacle_map):
+def ActionMove300(node, obstacle_map, step_size):
     new_node = []
-    new_node.append(node[0] - 1)
-    new_node.append(node[1] + 1)
-    if (new_node[0] >= 0) and (new_node[1] < 250) and (obstacle_map.get_at((new_node[0],pygame.Surface.get_height(obstacle_map) - new_node[1]))[0] == 1):
-        return new_node
-    else:
-        return None
-
-def ActionMoveUpRight(node, obstacle_map):
-    new_node = []
-    new_node.append(node[0] + 1)
-    new_node.append(node[1] + 1)
-    if (new_node[0] < 600) and (new_node[1] < 250) and (obstacle_map.get_at((new_node[0],pygame.Surface.get_height(obstacle_map) - new_node[1]))[0] == 1):
-        return new_node
-    else:
-        return None
-    
-def ActionMoveDownLeft(node, obstacle_map):
-    new_node = []
-    new_node.append(node[0] - 1)
-    new_node.append(node[1] - 1)
-    if (new_node[0] >= 0) and (new_node[1] >= 0) and (obstacle_map.get_at((new_node[0],pygame.Surface.get_height(obstacle_map) - new_node[1]))[0] == 1):
-        return new_node
-    else:
-        return None
-    
-def ActionMoveDownRight(node, obstacle_map):
-    new_node = []
-    new_node.append(node[0] + 1)
-    new_node.append(node[1] - 1)
-    if (new_node[0] < 600) and (new_node[1] >= 0) and (obstacle_map.get_at((new_node[0],pygame.Surface.get_height(obstacle_map) - new_node[1]))[0] == 1):
+    new_node.append(node[2] + 300) # Theta
+    new_node.append(node[0] + (step_size*np.cos(new_node[2]))) # X
+    new_node.append(node[1] + (step_size*np.sin(new_node[2]))) # Y
+    if (new_node[1] >= 0) and (new_node[1] < 250) and (new_node[0] >= 0) and (new_node[0] <600)  and (obstacle_map.get_at((new_node[0],pygame.Surface.get_height(obstacle_map) - new_node[1]))[0] == 1):
         return new_node
     else:
         return None
@@ -240,12 +228,15 @@ def Backtrack(start, goal, ClosedList, obstacle_map):
         video.export(verbose=True)
         video.compress(target_size=1024, new_file=False)
 
-def DijkstraPlanner(start, goal, obstacle_map):
+def AStarPlanner(start, goal, obstacle_map, step_size):
 
     OpenList = []
     flag = False
     ClosedList = {}
-    node_start = [0.0, start, start]
+    cost_to_go = 0
+    cost_to_come = round(math.dist([start[0],start[1]],[goal[0],goal[1]]),2)
+    total_cost = cost_to_go + cost_to_come
+    node_start = [total_cost, start, start]
     hq.heappush(OpenList, node_start)
     hq.heapify(OpenList)
     start_time = time.time()
@@ -259,35 +250,23 @@ def DijkstraPlanner(start, goal, obstacle_map):
             flag = True
             break
 
-        new_node = ActionMoveUp(current_node[2],obstacle_map)
+        new_node = ActionMove0(current_node[2],obstacle_map, step_size)
         if new_node is not None:
             CheckNode(new_node,ClosedList,OpenList,current_cost,current_node,1.0)
         
-        new_node = ActionMoveDown(current_node[2],obstacle_map)
+        new_node = ActionMove30(current_node[2],obstacle_map, step_size)
         if new_node is not None:
             CheckNode(new_node,ClosedList,OpenList,current_cost,current_node,1.0)
 
-        new_node = ActionMoveLeft(current_node[2],obstacle_map)
+        new_node = ActionMove60(current_node[2],obstacle_map, step_size)
         if new_node is not None:
             CheckNode(new_node,ClosedList,OpenList,current_cost,current_node,1.0)
 
-        new_node = ActionMoveRight(current_node[2],obstacle_map)
+        new_node = ActionMove330(current_node[2],obstacle_map, step_size)
         if new_node is not None:
             CheckNode(new_node,ClosedList,OpenList,current_cost,current_node,1.0)
 
-        new_node = ActionMoveUpLeft(current_node[2],obstacle_map)
-        if new_node is not None:
-            CheckNode(new_node,ClosedList,OpenList,current_cost,current_node,1.4)
-
-        new_node = ActionMoveUpRight(current_node[2],obstacle_map)
-        if new_node is not None:
-            CheckNode(new_node,ClosedList,OpenList,current_cost,current_node,1.4)
-
-        new_node = ActionMoveDownLeft(current_node[2],obstacle_map)
-        if new_node is not None:
-            CheckNode(new_node,ClosedList,OpenList,current_cost,current_node,1.4)
-
-        new_node = ActionMoveDownRight(current_node[2],obstacle_map)
+        new_node = ActionMove300(current_node[2],obstacle_map, step_size)
         if new_node is not None:
             CheckNode(new_node,ClosedList,OpenList,current_cost,current_node,1.4)
 
@@ -300,12 +279,24 @@ def main():
     clock = pygame.time.Clock()
     clock.tick(60)
     obstacle_map = pygame.display.set_mode((600, 250))
-    pygame.display.set_caption("Dijkstra Planner")
+    pygame.display.set_caption("A* Planner")
     pygame.display.update()
     obstacle_map.fill((1,1,1))
-    create_pygame_map(obstacle_map)
-    start, goal = UserInput(obstacle_map)
-    DijkstraPlanner(start, goal, obstacle_map)
+
+    font = pygame.font.Font('freesansbold.ttf', 32)
+    text = font.render('Waiting for User Input in Terminal', True, (255,255,0),(1,1,1))
+    textRect = text.get_rect()
+    textRect.center = (600 // 2, 250 // 2)
+    obstacle_map.blit(text, textRect)
+    pygame.display.update()
+
+    clearance= int(input("\nEnter the clearence for the obstacle: "))
+    radius= int(input("\nEnter the radius of the robot: "))
+    obstacle_map.fill((1,1,1))
+
+    create_pygame_map(obstacle_map,clearance,radius)
+    start, goal, step_size = UserInput(obstacle_map)
+    AStarPlanner(start, goal, obstacle_map, step_size)
     print("\n\033[1m" + " Press q to exit " + "\033[0m")
 
     while True and args.save_video == False:
