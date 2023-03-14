@@ -1,4 +1,4 @@
-# [Project 8 Puzzle Solve using BFS](https://github.com/Sanchitkedia/dijkstra_point_robot)
+# Project : A* algorithm for a point robot
 
 The project is to implement the A* algorithm for path planning of a mobile robot.
 The project is a part of the course ENPM661 - Planning for Autonomous Robots at the University of Maryland, College Park.
@@ -27,11 +27,11 @@ The project uses the following libraries:
 
 ```sh
 cd <path to the project>
-python3 dijkstra_sanchit_kedia_pygame.py -h # Use this command to get help for the command line arguments
-python3 dijkstra_sanchit_kedia_pygame.py # Use this command to run the project with vizualization in pygame wihout saving the video
+python3 a_star_sanchit_tanmay.py -h # Use this command to get help for the command line arguments
+python3 a_star_sanchit_tanmay.py # Use this command to run the project with vizualization in pygame wihout saving the video
 
 # Saving video slows down the vizualization of the project please be patient while the video is being saved the program will quit automatically after the video is saved
-python3 dijkstra_sanchit_kedia_pygame.py --save_video # Use this command to run the project with vizualization in pygame and save the video
+python3 a_star_sanchit_tanmay.py --save_video # Use this command to run the project with vizualization in pygame and save the video
 ```
 
 ## Output
