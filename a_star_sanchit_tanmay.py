@@ -13,7 +13,7 @@ def argument_parser():
     args = parser.parse_args()
     return args
 
-def create_pygame_map(display_surface,clearance,radius):
+def create_pygame_map(display_surface, clearance, radius):
     # Define the colors
     YELLOW = (255, 255, 0)
     RED = (255, 0, 0)
@@ -119,7 +119,7 @@ def UserInput(obstacle_map):
 
     return start, goal, step_size
 
-def ActionMove0(node, obstacle_map, step_size,Visited):
+def ActionMove0(node, obstacle_map, step_size, Visited):
     new_node = []
     new_node.append(int((node[0] + (step_size*np.cos(node[2]+0)))/0.5+0.5)* 0.5)
     new_node.append(int((node[1] + (step_size*np.sin(node[2]+0)))/0.5+0.5)* 0.5)
@@ -136,7 +136,7 @@ def ActionMove0(node, obstacle_map, step_size,Visited):
     else:
         return None, False
     
-def ActionMoveP30(node, obstacle_map, step_size,Visited):
+def ActionMoveP30(node, obstacle_map, step_size, Visited):
     new_node = []
     new_node.append(int((node[0] + (step_size*np.cos(node[2]+30)))/0.5+0.5)* 0.5)
     new_node.append(int((node[1] + (step_size*np.sin(node[2]+30)))/0.5+0.5)* 0.5)
@@ -153,7 +153,7 @@ def ActionMoveP30(node, obstacle_map, step_size,Visited):
     else:
         return None, False
     
-def ActionMoveP60(node, obstacle_map, step_size,Visited):
+def ActionMoveP60(node, obstacle_map, step_size, Visited):
     new_node = []
     new_node.append(int((node[0] + (step_size*np.cos(node[2]+60)))/0.5+0.5)* 0.5)
     new_node.append(int((node[1] + (step_size*np.sin(node[2]+60)))/0.5+0.5)* 0.5)
@@ -170,7 +170,7 @@ def ActionMoveP60(node, obstacle_map, step_size,Visited):
     else:
         return None, False
 
-def ActionMoveN30(node, obstacle_map, step_size,Visited):
+def ActionMoveN30(node, obstacle_map, step_size, Visited):
     new_node = []
     new_node.append(int((node[0] + (step_size*np.cos(node[2]+330)))/0.5+0.5)* 0.5)
     new_node.append(int((node[1] + (step_size*np.sin(node[2]+330)))/0.5+0.5)* 0.5)
@@ -187,7 +187,7 @@ def ActionMoveN30(node, obstacle_map, step_size,Visited):
     else:
         return None, False
 
-def ActionMoveN60(node, obstacle_map, step_size,Visited):
+def ActionMoveN60(node, obstacle_map, step_size, Visited):
     new_node = []
     new_node.append(int((node[0] + (step_size*np.cos(node[2]+300)))/0.5+0.5)* 0.5)
     new_node.append(int((node[1] + (step_size*np.sin(node[2]+300)))/0.5+0.5)* 0.5)
@@ -204,7 +204,7 @@ def ActionMoveN60(node, obstacle_map, step_size,Visited):
     else:
         return None, False
 
-def CheckGoal(node, goal,start, obstacle_map,ClosedList,start_time):
+def CheckGoal(node, goal, start, obstacle_map, ClosedList, start_time):
     if math.dist([node[0],node[1]],[goal[0],goal[1]]) < 1.5 or (node == goal):
         print("\n\033[92;5m" + "*****  Goal Reached!  *****" + "\033[0m")
         end_time = time.time()
@@ -215,7 +215,7 @@ def CheckGoal(node, goal,start, obstacle_map,ClosedList,start_time):
     else:
         return False
 
-def CheckNode(node_new,ClosedList,OpenList,current_node,step_size,goal,boolean):
+def CheckNode(node_new, ClosedList, OpenList, current_node, step_size, goal, boolean):
     node_new = tuple(node_new)
     if node_new not in ClosedList:
         if boolean:
@@ -273,7 +273,7 @@ def AStarPlanner(start, goal, obstacle_map, step_size):
     cost_to_go = math.dist([start[0],start[1]],[goal[0],goal[1]])
     cost_to_come = 0
     total_cost = cost_to_go + cost_to_come
-    node_start = [total_cost,start, start,cost_to_come,cost_to_go]
+    node_start = [total_cost, start, start, cost_to_come, cost_to_go]
     hq.heappush(OpenList, node_start)
     hq.heapify(OpenList)
     start_time = time.time()
@@ -283,30 +283,30 @@ def AStarPlanner(start, goal, obstacle_map, step_size):
         ClosedList[(current_node[2][0],current_node[2][1],current_node[2][2])] =  current_node[1]
         obstacle_map.set_at((int(current_node[2][0]),int(current_node[2][1])),(255,255,255))
         pygame.display.update()
-        if CheckGoal(current_node[2], goal, start, obstacle_map, ClosedList,start_time) == True:
+        if CheckGoal(current_node[2], goal, start, obstacle_map, ClosedList, start_time) == True:
             # print("\n\033[92m" + "OpenList Length: " + str(len(OpenList)) + " seconds" + "\033[0m\n")
             flag = True
             break
 
-        new_node, boolean = ActionMove0(current_node[2],obstacle_map, step_size,Visited)
+        new_node, boolean = ActionMove0(current_node[2], obstacle_map, step_size, Visited)
         if new_node is not None:
-            CheckNode(new_node,ClosedList,OpenList,current_node,step_size,goal,boolean)
+            CheckNode(new_node, ClosedList, OpenList, current_node, step_size, goal, boolean)
         
-        new_node, boolean = ActionMoveP30(current_node[2],obstacle_map, step_size,Visited)
+        new_node, boolean = ActionMoveP30(current_node[2], obstacle_map, step_size, Visited)
         if new_node is not None:
-            CheckNode(new_node,ClosedList,OpenList,current_node,step_size,goal,boolean)
+            CheckNode(new_node, ClosedList, OpenList, current_node, step_size, goal, boolean)
 
-        new_node, boolean = ActionMoveP60(current_node[2],obstacle_map, step_size,Visited)
+        new_node, boolean = ActionMoveP60(current_node[2], obstacle_map, step_size, Visited)
         if new_node is not None:
-            CheckNode(new_node,ClosedList,OpenList,current_node,step_size,goal,boolean)
+            CheckNode(new_node, ClosedList, OpenList, current_node, step_size, goal, boolean)
 
-        new_node, boolean = ActionMoveN30(current_node[2],obstacle_map, step_size,Visited)
+        new_node, boolean = ActionMoveN30(current_node[2], obstacle_map, step_size, Visited)
         if new_node is not None:
-            CheckNode(new_node,ClosedList,OpenList,current_node,step_size,goal,boolean)
+            CheckNode(new_node, ClosedList, OpenList, current_node, step_size, goal, boolean)
 
-        new_node, boolean = ActionMoveN60(current_node[2],obstacle_map, step_size,Visited)
+        new_node, boolean = ActionMoveN60(current_node[2], obstacle_map, step_size, Visited)
         if new_node is not None:
-            CheckNode(new_node,ClosedList,OpenList,current_node,step_size,goal,boolean)
+            CheckNode(new_node, ClosedList, OpenList, current_node, step_size, goal, boolean)
 
     if flag == False:
         print("\n\033[91m" + "No Valid Path Found!" + "\033[0m\n")
@@ -349,6 +349,6 @@ def main():
 
 if __name__ == '__main__':
     print("\n\033[1m" + "******************************************" + "\033[0m")
-    print("\033[1m" + "     Dijkstra Algorithm : Point Robot     " + "\033[0m")
+    print("\033[1m" + "     A* Algorithm : Point Robot     " + "\033[0m")
     print("\033[1m" + "******************************************" + "\033[0m")
     main()
