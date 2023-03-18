@@ -119,67 +119,92 @@ def UserInput(obstacle_map):
 
     return start, goal, step_size
 
-def ActionMove0(node, obstacle_map, step_size):
+def ActionMove0(node, obstacle_map, step_size,Visited):
     new_node = []
-    # new_node.append(int((node[0] + (step_size*np.cos(node[2])))/0.5+0.5)* 0.5)
-    # new_node.append(int((node[1] + (step_size*np.sin(node[2])))/0.5+0.5)* 0.5)
-    new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+0))))))
-    new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+0))))))
-    new_node.append(node[2] + 0)
-    if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <=600) and (obstacle_map.get_at((new_node[0],pygame.Surface.get_height(obstacle_map) - new_node[1]))[0] == 1):
-        return new_node
+    new_node.append(int((node[0] + (step_size*np.cos(node[2]+0)))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(node[2]+0)))/0.5+0.5)* 0.5)
+    # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+0))))))
+    # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+0))))))
+    angle = (node[2] + 0 ) % 360
+    new_node.append(angle)
+    if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <= 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map) - int(new_node[1])))[0] == 1):
+        if(Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] == 1):
+            return new_node, True
+        else:
+            Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] = 1
+            return new_node, False
     else:
-        return None
+        return None, False
     
-def ActionMove30(node, obstacle_map, step_size):
+def ActionMoveP30(node, obstacle_map, step_size,Visited):
     new_node = []
-    # new_node.append(int((node[0] + (step_size*np.cos(node[2])))/0.5+0.5)* 0.5)
-    # new_node.append(int((node[1] + (step_size*np.sin(node[2])))/0.5+0.5)* 0.5)
-    new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+30))))))
-    new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+30))))))
-    new_node.append(node[2] + 30)
-    if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <=600) and (obstacle_map.get_at((new_node[0],pygame.Surface.get_height(obstacle_map) - new_node[1]))[0] == 1):
-        return new_node
+    new_node.append(int((node[0] + (step_size*np.cos(node[2]+30)))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(node[2]+30)))/0.5+0.5)* 0.5)
+    # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+30))))))
+    # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+30))))))
+    angle = (node[2] - 30 ) % 360
+    new_node.append(angle)
+    if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <= 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map) - int(new_node[1])))[0] == 1):
+        if(Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] == 1):
+            return new_node,True
+        else:
+            Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] = 1
+            return new_node,False
     else:
-        return None
+        return None, False
     
-def ActionMove60(node, obstacle_map, step_size):
+def ActionMoveP60(node, obstacle_map, step_size,Visited):
     new_node = []
-    # new_node.append(int((node[0] + (step_size*np.cos(node[2])))/0.5+0.5)* 0.5)
-    # new_node.append(int((node[1] + (step_size*np.sin(node[2])))/0.5+0.5)* 0.5)
-    new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+60))))))
-    new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+60))))))
-    new_node.append(node[2] + 60)
-    if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <=600) and (obstacle_map.get_at((new_node[0],pygame.Surface.get_height(obstacle_map) - new_node[1]))[0] == 1):
-        return new_node
+    new_node.append(int((node[0] + (step_size*np.cos(node[2]+60)))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(node[2]+60)))/0.5+0.5)* 0.5)
+    # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+60))))))
+    # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+60))))))
+    angle = (node[2] - 60 ) % 360
+    new_node.append(angle)
+    if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <= 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map) - int(new_node[1])))[0] == 1):
+        if(Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] == 1):
+            return new_node,True
+        else:
+            Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] = 1
+            return new_node,False
     else:
-        return None
+        return None, False
 
-def ActionMove330(node, obstacle_map, step_size):
+def ActionMoveN30(node, obstacle_map, step_size,Visited):
     new_node = []
-    # new_node.append(int((node[0] + (step_size*np.cos(node[2])))/0.5+0.5)* 0.5)
-    # new_node.append(int((node[1] + (step_size*np.sin(node[2])))/0.5+0.5)* 0.5)
-    new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+330))))))
-    new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+330))))))
-    new_node.append(node[2] + 330)
-    if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <=600) and (obstacle_map.get_at((new_node[0],pygame.Surface.get_height(obstacle_map) - new_node[1]))[0] == 1):
-        return new_node
+    new_node.append(int((node[0] + (step_size*np.cos(node[2]+330)))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(node[2]+330)))/0.5+0.5)* 0.5)
+    # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+330))))))
+    # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+330))))))
+    angle = (node[2] + 30 ) % 360
+    new_node.append(angle)
+    if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <= 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map) - int(new_node[1])))[0] == 1):
+        if(Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] == 1):
+            return new_node,True
+        else:
+            Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] = 1
+            return new_node,False
     else:
-        return None
+        return None, False
 
-def ActionMove300(node, obstacle_map, step_size):
+def ActionMoveN60(node, obstacle_map, step_size,Visited):
     new_node = []
-    # new_node.append(int((node[0] + (step_size*np.cos(node[2])))/0.5+0.5)* 0.5)
-    # new_node.append(int((node[1] + (step_size*np.sin(node[2])))/0.5+0.5)* 0.5)
-    new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+300))))))
-    new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+300))))))
-    new_node.append(node[2] + 300)
-    if (new_node[1] >= 0) and (new_node[1] < 250) and (new_node[0] >= 0) and (new_node[0] <600) and (obstacle_map.get_at((new_node[0],pygame.Surface.get_height(obstacle_map) - new_node[1]))[0] == 1):
-        return new_node
+    new_node.append(int((node[0] + (step_size*np.cos(node[2]+300)))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(node[2]+300)))/0.5+0.5)* 0.5)
+    # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+300))))))
+    # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+300))))))
+    angle = (node[2] + 60 ) % 360
+    new_node.append(angle)
+    if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <= 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map) - int(new_node[1])))[0] == 1):
+        if(Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] == 1):
+            return new_node,True
+        else:
+            Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] = 1
+            return new_node,False
     else:
-        return None
+        return None, False
 
-def CheckGoal(node, goal,start, obstacle_map,ClosedList,start_time,radius):
+def CheckGoal(node, goal,start, obstacle_map,ClosedList,start_time):
     if math.dist([node[0],node[1]],[goal[0],goal[1]]) < 1.5 or (node == goal):
         print("\n\033[92;5m" + "*****  Goal Reached!  *****" + "\033[0m")
         end_time = time.time()
@@ -190,20 +215,21 @@ def CheckGoal(node, goal,start, obstacle_map,ClosedList,start_time,radius):
     else:
         return False
 
-def CheckNode(node_new,ClosedList,OpenList,current_cost,current_node,step_size,goal):
+def CheckNode(node_new,ClosedList,OpenList,current_node,step_size,goal,boolean):
     node_new = tuple(node_new)
     if node_new not in ClosedList:
-        found = True
-        for node in OpenList:
-            if node[2] == node_new:
-                idx = OpenList.index(node)
-                found = False
-                if node[3] > current_node[3]+ step_size:
-                    OpenList[idx][3] = current_cost + step_size
-                    OpenList[idx][1] = current_node[2]
-                break
-        if found:
-            hq.heappush(OpenList, [current_cost + step_size + round(math.dist([node_new[0],node_new[1]],[goal[0],goal[1]]),2), current_node[2], node_new,current_cost + step_size,current_node[4]])
+        if boolean:
+            for node in OpenList:
+                if node[2] == node_new:
+                    idx = OpenList.index(node)
+                    cost = current_node[3]+ step_size + math.dist([node_new[0],node_new[1]],[goal[0],goal[1]])
+                    if node[0] > cost:
+                        OpenList[idx][0] = cost
+                        OpenList[idx][3] = current_node[3] + step_size 
+                        OpenList[idx][1] = current_node[2]
+                    break
+        else:
+            hq.heappush(OpenList, [current_node[3] + step_size + math.dist([node_new[0],node_new[1]],[goal[0],goal[1]]), current_node[2], node_new,current_node[3] + step_size,math.dist([node_new[0],node_new[1]],[goal[0],goal[1]])])
 
 def Backtrack(start, goal, ClosedList, obstacle_map):
     args = argument_parser()
@@ -215,7 +241,7 @@ def Backtrack(start, goal, ClosedList, obstacle_map):
         if key == (start[0],start[1]):
             continue
         else:
-            obstacle_map.set_at((key[0],key[1]),(255,255,255))
+            obstacle_map.set_at((int(key[0]),int(key[1])),(255,255,255))
             if args.save_video:
                 video.update(pygame.surfarray.pixels3d(obstacle_map).swapaxes(0, 1), inverted=False)
             pygame.display.update()
@@ -224,7 +250,7 @@ def Backtrack(start, goal, ClosedList, obstacle_map):
         path.append(current_node)
     path.reverse()
     for i in range(len(path)):
-        obstacle_map.set_at((path[i][0],path[i][1]),(0,0,255))
+        obstacle_map.set_at((int(path[i][0]),int(path[i][1])),(0,0,255))
         if args.save_video:
             video.update(pygame.surfarray.pixels3d(obstacle_map).swapaxes(0, 1), inverted=False)
         pygame.display.update()
@@ -238,12 +264,13 @@ def Backtrack(start, goal, ClosedList, obstacle_map):
         video.export(verbose=True)
         video.compress(target_size=1024, new_file=False)
 
-def AStarPlanner(start, goal, obstacle_map, step_size,radius):
+def AStarPlanner(start, goal, obstacle_map, step_size):
 
     OpenList = []
     flag = False
     ClosedList = {}
-    cost_to_go = round(math.dist([start[0],start[1]],[goal[0],goal[1]]),1)
+    Visited = np.zeros((1200,500,12))
+    cost_to_go = math.dist([start[0],start[1]],[goal[0],goal[1]])
     cost_to_come = 0
     total_cost = cost_to_go + cost_to_come
     node_start = [total_cost,start, start,cost_to_come,cost_to_go]
@@ -254,33 +281,32 @@ def AStarPlanner(start, goal, obstacle_map, step_size,radius):
     while (len(OpenList) > 0):
         current_node = hq.heappop(OpenList)
         ClosedList[(current_node[2][0],current_node[2][1],current_node[2][2])] =  current_node[1]
-        current_cost = current_node[0]
-        obstacle_map.set_at((current_node[2][0],current_node[2][1]),(255,255,255))
+        obstacle_map.set_at((int(current_node[2][0]),int(current_node[2][1])),(255,255,255))
         pygame.display.update()
-        if CheckGoal(current_node[2], goal, start, obstacle_map, ClosedList,start_time,radius) == True:
+        if CheckGoal(current_node[2], goal, start, obstacle_map, ClosedList,start_time) == True:
             # print("\n\033[92m" + "OpenList Length: " + str(len(OpenList)) + " seconds" + "\033[0m\n")
             flag = True
             break
 
-        new_node = ActionMove0(current_node[2],obstacle_map, step_size)
+        new_node, boolean = ActionMove0(current_node[2],obstacle_map, step_size,Visited)
         if new_node is not None:
-            CheckNode(new_node,ClosedList,OpenList,current_cost,current_node,step_size,goal)
+            CheckNode(new_node,ClosedList,OpenList,current_node,step_size,goal,boolean)
         
-        new_node = ActionMove30(current_node[2],obstacle_map, step_size)
+        new_node, boolean = ActionMoveP30(current_node[2],obstacle_map, step_size,Visited)
         if new_node is not None:
-            CheckNode(new_node,ClosedList,OpenList,current_cost,current_node,step_size,goal)
+            CheckNode(new_node,ClosedList,OpenList,current_node,step_size,goal,boolean)
 
-        new_node = ActionMove60(current_node[2],obstacle_map, step_size)
+        new_node, boolean = ActionMoveP60(current_node[2],obstacle_map, step_size,Visited)
         if new_node is not None:
-            CheckNode(new_node,ClosedList,OpenList,current_cost,current_node,step_size,goal)
+            CheckNode(new_node,ClosedList,OpenList,current_node,step_size,goal,boolean)
 
-        new_node = ActionMove330(current_node[2],obstacle_map, step_size)
+        new_node, boolean = ActionMoveN30(current_node[2],obstacle_map, step_size,Visited)
         if new_node is not None:
-            CheckNode(new_node,ClosedList,OpenList,current_cost,current_node,step_size,goal)
+            CheckNode(new_node,ClosedList,OpenList,current_node,step_size,goal,boolean)
 
-        new_node = ActionMove300(current_node[2],obstacle_map, step_size)
+        new_node, boolean = ActionMoveN60(current_node[2],obstacle_map, step_size,Visited)
         if new_node is not None:
-            CheckNode(new_node,ClosedList,OpenList,current_cost,current_node,step_size,goal)
+            CheckNode(new_node,ClosedList,OpenList,current_node,step_size,goal,boolean)
 
     if flag == False:
         print("\n\033[91m" + "No Valid Path Found!" + "\033[0m\n")
@@ -308,7 +334,7 @@ def main():
 
     create_pygame_map(obstacle_map,clearance,radius)
     start, goal, step_size = UserInput(obstacle_map)
-    AStarPlanner(start, goal, obstacle_map, step_size,radius)
+    AStarPlanner(start, goal, obstacle_map, step_size)
     print("\n\033[1m" + " Press q to exit " + "\033[0m")
 
     while True and args.save_video == False:
