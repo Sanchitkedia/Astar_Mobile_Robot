@@ -121,8 +121,8 @@ def UserInput(obstacle_map):
 
 def ActionMove0(node, obstacle_map, step_size, Visited):
     new_node = []
-    new_node.append(int((node[0] + (step_size*np.cos(node[2]+0)))/0.5+0.5)* 0.5)
-    new_node.append(int((node[1] + (step_size*np.sin(node[2]+0)))/0.5+0.5)* 0.5)
+    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+0))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+0))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+0))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+0))))))
     angle = (node[2] + 0 ) % 360
@@ -138,8 +138,8 @@ def ActionMove0(node, obstacle_map, step_size, Visited):
     
 def ActionMoveP30(node, obstacle_map, step_size, Visited):
     new_node = []
-    new_node.append(int((node[0] + (step_size*np.cos(node[2]+30)))/0.5+0.5)* 0.5)
-    new_node.append(int((node[1] + (step_size*np.sin(node[2]+30)))/0.5+0.5)* 0.5)
+    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+30))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+30))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+30))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+30))))))
     angle = (node[2] - 30 ) % 360
@@ -155,8 +155,8 @@ def ActionMoveP30(node, obstacle_map, step_size, Visited):
     
 def ActionMoveP60(node, obstacle_map, step_size, Visited):
     new_node = []
-    new_node.append(int((node[0] + (step_size*np.cos(node[2]+60)))/0.5+0.5)* 0.5)
-    new_node.append(int((node[1] + (step_size*np.sin(node[2]+60)))/0.5+0.5)* 0.5)
+    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+60))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+60))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+60))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+60))))))
     angle = (node[2] - 60 ) % 360
@@ -172,8 +172,8 @@ def ActionMoveP60(node, obstacle_map, step_size, Visited):
 
 def ActionMoveN30(node, obstacle_map, step_size, Visited):
     new_node = []
-    new_node.append(int((node[0] + (step_size*np.cos(node[2]+330)))/0.5+0.5)* 0.5)
-    new_node.append(int((node[1] + (step_size*np.sin(node[2]+330)))/0.5+0.5)* 0.5)
+    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+330))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+330))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+330))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+330))))))
     angle = (node[2] + 30 ) % 360
@@ -189,8 +189,8 @@ def ActionMoveN30(node, obstacle_map, step_size, Visited):
 
 def ActionMoveN60(node, obstacle_map, step_size, Visited):
     new_node = []
-    new_node.append(int((node[0] + (step_size*np.cos(node[2]+300)))/0.5+0.5)* 0.5)
-    new_node.append(int((node[1] + (step_size*np.sin(node[2]+300)))/0.5+0.5)* 0.5)
+    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+300))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+300))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+300))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+300))))))
     angle = (node[2] + 60 ) % 360
@@ -281,8 +281,8 @@ def AStarPlanner(start, goal, obstacle_map, step_size):
     while (len(OpenList) > 0):
         current_node = hq.heappop(OpenList)
         ClosedList[(current_node[2][0],current_node[2][1],current_node[2][2])] =  current_node[1]
-        obstacle_map.set_at((int(current_node[2][0]),int(current_node[2][1])),(255,255,255))
-        pygame.display.update()
+        # obstacle_map.set_at((int(current_node[2][0]),int(current_node[2][1])),(255,255,255))
+        # pygame.display.update()
         if CheckGoal(current_node[2], goal, start, obstacle_map, ClosedList, start_time) == True:
             # print("\n\033[92m" + "OpenList Length: " + str(len(OpenList)) + " seconds" + "\033[0m\n")
             flag = True
