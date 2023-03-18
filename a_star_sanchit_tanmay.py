@@ -122,8 +122,8 @@ def UserInput(obstacle_map):
 def ActionMove0(node, obstacle_map, step_size, Visited):
     new_node = []
     angle = (node[2] + 0 ) % 360
-    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
-    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(angle))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(angle))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+0))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+0))))))
     new_node.append(angle)
@@ -139,8 +139,8 @@ def ActionMove0(node, obstacle_map, step_size, Visited):
 def ActionMoveP30(node, obstacle_map, step_size, Visited):
     new_node = []
     angle = (node[2] - 30) % 360
-    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
-    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(angle))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(angle))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+30))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+30))))))
     new_node.append(angle)
@@ -156,8 +156,8 @@ def ActionMoveP30(node, obstacle_map, step_size, Visited):
 def ActionMoveP60(node, obstacle_map, step_size, Visited):
     new_node = []
     angle = (node[2] - 60 ) % 360
-    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
-    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(angle))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(angle))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+60))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+60))))))
     
@@ -174,8 +174,8 @@ def ActionMoveP60(node, obstacle_map, step_size, Visited):
 def ActionMoveN30(node, obstacle_map, step_size, Visited):
     new_node = []
     angle = (node[2] + 30 ) % 360
-    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
-    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(angle))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(angle))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+330))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+330))))))
     
@@ -192,8 +192,8 @@ def ActionMoveN30(node, obstacle_map, step_size, Visited):
 def ActionMoveN60(node, obstacle_map, step_size, Visited):
     new_node = []
     angle = (node[2] + 60 ) % 360
-    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
-    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(angle))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(angle))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+300))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+300))))))
     
@@ -208,7 +208,7 @@ def ActionMoveN60(node, obstacle_map, step_size, Visited):
         return None, False
 
 def CheckGoal(node, goal, start, obstacle_map, ClosedList, start_time):
-    if math.dist([node[0],node[1]],[goal[0],goal[1]]) < 1.5 or (node == goal):
+    if math.dist([node[0],node[1]],[goal[0],goal[1]]) < 1.5:
         print("\n\033[92;5m" + "*****  Goal Reached!  *****" + "\033[0m")
         end_time = time.time()
         time_taken = round(end_time - start_time, 2)
@@ -253,7 +253,7 @@ def Backtrack(start, goal, ClosedList, obstacle_map):
         path.append(current_node)
     path.reverse()
     for i in range(len(path)):
-        obstacle_map.set_at((int(path[i][0]),int(path[i][1])),(0,0,255))
+        obstacle_map.set_at((int(path[i][0]),int(path[i][1])),(255,0,0))
         if args.save_video:
             video.update(pygame.surfarray.pixels3d(obstacle_map).swapaxes(0, 1), inverted=False)
         pygame.display.update()
