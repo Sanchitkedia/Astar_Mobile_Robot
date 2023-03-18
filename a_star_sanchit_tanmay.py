@@ -121,11 +121,11 @@ def UserInput(obstacle_map):
 
 def ActionMove0(node, obstacle_map, step_size, Visited):
     new_node = []
-    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+0))))/0.5+0.5)* 0.5)
-    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+0))))/0.5+0.5)* 0.5)
+    angle = (node[2] + 0 ) % 360
+    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+0))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+0))))))
-    angle = (node[2] + 0 ) % 360
     new_node.append(angle)
     if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <= 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map) - int(new_node[1])))[0] == 1):
         if(Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] == 1):
@@ -138,11 +138,11 @@ def ActionMove0(node, obstacle_map, step_size, Visited):
     
 def ActionMoveP30(node, obstacle_map, step_size, Visited):
     new_node = []
-    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+30))))/0.5+0.5)* 0.5)
-    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+30))))/0.5+0.5)* 0.5)
+    angle = (node[2] - 30) % 360
+    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+30))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+30))))))
-    angle = (node[2] - 30 ) % 360
     new_node.append(angle)
     if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <= 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map) - int(new_node[1])))[0] == 1):
         if(Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] == 1):
@@ -155,11 +155,12 @@ def ActionMoveP30(node, obstacle_map, step_size, Visited):
     
 def ActionMoveP60(node, obstacle_map, step_size, Visited):
     new_node = []
-    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+60))))/0.5+0.5)* 0.5)
-    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+60))))/0.5+0.5)* 0.5)
+    angle = (node[2] - 60 ) % 360
+    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+60))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+60))))))
-    angle = (node[2] - 60 ) % 360
+    
     new_node.append(angle)
     if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <= 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map) - int(new_node[1])))[0] == 1):
         if(Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] == 1):
@@ -172,11 +173,12 @@ def ActionMoveP60(node, obstacle_map, step_size, Visited):
 
 def ActionMoveN30(node, obstacle_map, step_size, Visited):
     new_node = []
-    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+330))))/0.5+0.5)* 0.5)
-    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+330))))/0.5+0.5)* 0.5)
+    angle = (node[2] + 30 ) % 360
+    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+330))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+330))))))
-    angle = (node[2] + 30 ) % 360
+    
     new_node.append(angle)
     if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <= 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map) - int(new_node[1])))[0] == 1):
         if(Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] == 1):
@@ -189,11 +191,12 @@ def ActionMoveN30(node, obstacle_map, step_size, Visited):
 
 def ActionMoveN60(node, obstacle_map, step_size, Visited):
     new_node = []
-    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+300))))/0.5+0.5)* 0.5)
-    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+300))))/0.5+0.5)* 0.5)
+    angle = (node[2] + 60 ) % 360
+    new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
+    new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(node[2]+angle))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+300))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+300))))))
-    angle = (node[2] + 60 ) % 360
+    
     new_node.append(angle)
     if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <= 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map) - int(new_node[1])))[0] == 1):
         if(Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] == 1):
