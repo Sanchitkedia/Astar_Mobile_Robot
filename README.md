@@ -64,7 +64,7 @@ python3 a_star_sanchit_tanmay.py --save_video # Use this command to run the proj
   - Radius: 5
   - START NODE: (550,125,0)
   - GOAL NODE: (430,230,0)
-  - Step size: 5
+  - Step size: 10
 
 ### Video of vizualization of Task 1 in pygame
 
