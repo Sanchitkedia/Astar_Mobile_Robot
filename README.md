@@ -1,4 +1,4 @@
-# Project : A* algorithm for a point robot
+# Project : A* algorithm for a mobile robot
 
 The project is to implement the A* algorithm for path planning of a mobile robot.
 The project is a part of the course ENPM661 - Planning for Autonomous Robots at the University of Maryland, College Park.
@@ -20,6 +20,8 @@ The project uses the following libraries:
 4. heapq
 5. time
 6. argparse
+7. sys
+8. math
 
 ## Usage
 
@@ -37,15 +39,41 @@ python3 a_star_sanchit_tanmay.py --save_video # Use this command to run the proj
 ## Output
 
 - Test case 1
-  - START NODE: (19,19)
-  - GOAL NODE: (440,125)
+  - Clearance: 3
+  - Radius: 7
+  - START NODE: (19,19,0)
+  - GOAL NODE: (70,200,0)
+  - Step size: 10
 
 - Test case 2
-  - START NODE: (19,231)
-  - GOAL NODE: (125,125)
+  - Clearance: 6
+  - Radius: 4
+  - START NODE: (19,19,2)
+  - GOAL NODE: (70,200,0)
+  - Step size: 5
 
-- Test case 3 [Goal node not reachable]
-  - START NODE: (50,125)
-  - GOAL NODE: (572,220)
+- Test case 3
+  - Clearance: 5
+  - Radius: 5
+  - START NODE: (50,125,0)
+  - GOAL NODE: (430,230,0)
+  - Step size: 5
+
+- Test case 4 [Goal node not reachable] [Takes a long time to run]
+  - Clearance: 5
+  - Radius: 5
+  - START NODE: (550,125,0)
+  - GOAL NODE: (430,230,0)
+  - Step size: 5
 
 ### Video of vizualization of Task 1 in pygame
+
+
+### Video of vizualization of Task 2 in pygame
+
+
+### Video of vizualization of Task 3 in pygame
+
+
+### Terminal output of Task 4
+
