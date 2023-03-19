@@ -150,7 +150,7 @@ def ActionMove0(node, obstacle_map, step_size, Visited):
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+0))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+0))))))
     new_node.append(angle)
-    if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <= 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map) - int(new_node[1])))[0] == 1):
+    if (new_node[1] >= 0) and (new_node[1] < 250) and (new_node[0] >= 0) and (new_node[0] < 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map)-1 - int(new_node[1])))[0] == 1):
         if(Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] == 1):
             return new_node, True
         else:
@@ -161,13 +161,13 @@ def ActionMove0(node, obstacle_map, step_size, Visited):
     
 def ActionMoveP30(node, obstacle_map, step_size, Visited):
     new_node = []
-    angle = (node[2] - 30) % 360
+    angle = (node[2] + 30) % 360
     new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(angle))))/0.5+0.5)* 0.5)
     new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(angle))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+30))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+30))))))
     new_node.append(angle)
-    if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <= 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map) - int(new_node[1])))[0] == 1):
+    if (new_node[1] >= 0) and (new_node[1] < 250) and (new_node[0] >= 0) and (new_node[0] < 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map)-1 - int(new_node[1])))[0] == 1):
         if(Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] == 1):
             return new_node,True
         else:
@@ -178,14 +178,14 @@ def ActionMoveP30(node, obstacle_map, step_size, Visited):
     
 def ActionMoveP60(node, obstacle_map, step_size, Visited):
     new_node = []
-    angle = (node[2] - 60 ) % 360
+    angle = (node[2] + 60 ) % 360
     new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(angle))))/0.5+0.5)* 0.5)
     new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(angle))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+60))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+60))))))
     
     new_node.append(angle)
-    if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <= 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map) - int(new_node[1])))[0] == 1):
+    if (new_node[1] >= 0) and (new_node[1] < 250) and (new_node[0] >= 0) and (new_node[0] < 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map)-1 - int(new_node[1])))[0] == 1):
         if(Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] == 1):
             return new_node,True
         else:
@@ -196,14 +196,14 @@ def ActionMoveP60(node, obstacle_map, step_size, Visited):
 
 def ActionMoveN30(node, obstacle_map, step_size, Visited):
     new_node = []
-    angle = (node[2] + 30 ) % 360
+    angle = (node[2] - 30 ) % 360
     new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(angle))))/0.5+0.5)* 0.5)
     new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(angle))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+330))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+330))))))
     
     new_node.append(angle)
-    if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <= 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map) - int(new_node[1])))[0] == 1):
+    if (new_node[1] >= 0) and (new_node[1] < 250) and (new_node[0] >= 0) and (new_node[0] < 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map)-1 - int(new_node[1])))[0] == 1):
         if(Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] == 1):
             return new_node,True
         else:
@@ -214,14 +214,14 @@ def ActionMoveN30(node, obstacle_map, step_size, Visited):
 
 def ActionMoveN60(node, obstacle_map, step_size, Visited):
     new_node = []
-    angle = (node[2] + 60 ) % 360
+    angle = (node[2] - 60 ) % 360
     new_node.append(int((node[0] + (step_size*np.cos(np.deg2rad(angle))))/0.5+0.5)* 0.5)
     new_node.append(int((node[1] + (step_size*np.sin(np.deg2rad(angle))))/0.5+0.5)* 0.5)
     # new_node.append(round((node[0] + (step_size*np.cos(np.deg2rad(node[2]+300))))))
     # new_node.append(round((node[1] + (step_size*np.sin(np.deg2rad(node[2]+300))))))
     
     new_node.append(angle)
-    if (new_node[1] >= 0) and (new_node[1] <= 250) and (new_node[0] >= 0) and (new_node[0] <= 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map) - int(new_node[1])))[0] == 1):
+    if (new_node[1] >= 0) and (new_node[1] < 250) and (new_node[0] >= 0) and (new_node[0] < 600) and (obstacle_map.get_at((int(new_node[0]),pygame.Surface.get_height(obstacle_map)-1 - int(new_node[1])))[0] == 1):
         if(Visited[int(new_node[0]*2)][int(new_node[1]*2)][int(new_node[2]/30)] == 1):
             return new_node,True
         else:
@@ -259,7 +259,7 @@ def CheckNode(node_new, ClosedList, OpenList, current_node, step_size, goal, boo
 
 def Backtrack(start, goal, ClosedList, obstacle_map,step_size):
     args = argument_parser()
-    video = vidmaker.Video("DijkstraPlanner_pygame.mp4", late_export=True)
+    video = vidmaker.Video("A*Planner_pygame.mp4", late_export=True)
     path = []
     path.append(goal)
     current_node = goal
@@ -271,10 +271,9 @@ def Backtrack(start, goal, ClosedList, obstacle_map,step_size):
                 for i in [0,30,60,300,330]:
                     i = (i + key[2]) % 360
                     x = int(key[0]+step_size*np.cos(np.deg2rad(i)))
-                    y = int(250 - key[1] + step_size*np.sin(np.deg2rad(i)))
-                    if (y >= 0) and (y <= 250) and (x >= 0) and (x <= 600) and (obstacle_map.get_at((int(x),pygame.Surface.get_height(obstacle_map) - int(y)))[2] != 0):
-                        pygame.draw.aaline(obstacle_map, (0,255,255), (key[0],250 - key[1]), (x,y), 1)
-                        pygame.time.wait(1)
+                    y = int(key[1] + step_size*np.sin(np.deg2rad(i)))
+                    if (y >= 0) and (y < 250) and (x >= 0) and (x < 600) and (obstacle_map.get_at((int(x),pygame.Surface.get_height(obstacle_map)-1 - int(y)))[2] != 0):
+                        pygame.draw.aaline(obstacle_map, (0,255,255), (key[0],250 - key[1]), (x,250-y), 1)
             if args.save_video:
                 video.update(pygame.surfarray.pixels3d(obstacle_map).swapaxes(0, 1), inverted=False)
             pygame.display.update()
@@ -284,11 +283,11 @@ def Backtrack(start, goal, ClosedList, obstacle_map,step_size):
     path.reverse()
     for i in range(len(path)):
         for j in [0,30,60,300,330]:
-                j = (j + key[2]) % 360
-                x = int(path[i][0]+step_size*np.cos(np.deg2rad(j)))
-                y = int(250 - path[i][1] + step_size*np.sin(np.deg2rad(j)))
-                if (y >= 0) and (y <= 250) and (x >= 0) and (x <= 600) and (obstacle_map.get_at((int(x),pygame.Surface.get_height(obstacle_map) - int(y)))[2] != 0):
-                    pygame.draw.aaline(obstacle_map, (0,0,255), (path[i][0],250 - path[i][1]), (x,y), 1)
+                j = (j + path[i][2]) % 360
+                x = int(path[i][0] +step_size*np.cos(np.deg2rad(j)))
+                y = int(path[i][1] + step_size*np.sin(np.deg2rad(j)))
+                if (y >= 0) and (y < 250) and (x >= 0) and (x < 600) and (obstacle_map.get_at((int(x),pygame.Surface.get_height(obstacle_map)-1 - int(y)))[2] != 0):
+                    pygame.draw.aaline(obstacle_map, (0,0,255), (path[i][0],250 - path[i][1]), (x,250-y), 1)
         if i != 0:
             pygame.draw.aaline(obstacle_map, (255,255,255), (path[i-1][0],250 - path[i-1][1]), (path[i][0],250 - path[i][1]), 1)
         if args.save_video:
@@ -296,6 +295,7 @@ def Backtrack(start, goal, ClosedList, obstacle_map,step_size):
         pygame.display.update()
   
     pygame.display.update()
+    pygame.time.wait(100)
     # print("\n\033[92m" + "ClosedList Length: " + str(len(ClosedList)) + "\033[0m\n")
     print("\n\033[92m" + "Path Length: " + str(len(path)) + "\033[0m\n")
 
