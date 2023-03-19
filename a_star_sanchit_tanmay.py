@@ -348,6 +348,9 @@ def AStarPlanner(start, goal, obstacle_map, step_size):
 
     if flag == False:
         print("\n\033[91m" + "No Valid Path Found!" + "\033[0m\n")
+        end_time = time.time()
+        time_taken = round(end_time - start_time, 2)
+        print("\033[91m" + "Time taken: " + str(time_taken) + " seconds" + "\033[0m\n")
 
 def main():
     args = argument_parser()
