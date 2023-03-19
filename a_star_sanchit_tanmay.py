@@ -17,6 +17,7 @@ def create_pygame_map(display_surface, clearance, radius):
     # Define the colors
     YELLOW = (255, 255, 0)
     RED = (255, 0, 0)
+    WHITE = (255, 255, 255)
 
     offset = radius + clearance
 
@@ -45,23 +46,45 @@ def create_pygame_map(display_surface, clearance, radius):
             if(x-offset) <= 0 or (x+offset) >= 600 or (y-offset) <= 0 or (y+offset) >= 250:
                 display_surface.set_at((x,y), YELLOW)
 
+         # Drawing Scaled Obstacles ie. with clearance
+
+            # Equations for rectangle1 using half-plane method
+            if (x >= 100-clearance and x <= 150+clearance) and (y >= 0-clearance and y <= 100+clearance):
+                display_surface.set_at((x,y), RED)
+
+            # Equations for rectangle2 using half-plane method
+            if (x >= 100-clearance and x <= 150+clearance) and (y >= 150-clearance and y <= 250+clearance):
+                display_surface.set_at((x,y), RED)
+
+            # Equations for hexagon using half-plane method
+            if (y-(0.578*x)-(-clearance*(0.578**2 + 1)**0.5 -123.21))>= 0 and (y-(-0.578*x)-(clearance*((-0.578)**2 + 1)**0.5 + 373.21))<= 0 and (y-(0.578*x)-(clearance*(0.578**2 + 1)**0.5 + 26.79))<= 0 and (y-(-0.578*x)-(-clearance*((-0.578)**2 + 1)**0.5 + 223.21))>= 0 and (x-235+clearance) >= 0 and (x-365-clearance) <= 0:
+                display_surface.set_at((x,y), RED)
+
+            # Equations for triangle using half-plane method
+            if (y-(2*x)-(-clearance*(2**2 + 1)**0.5 + (-895)))>= 0 and (y-(-2*x)-(clearance*((-2)**2 + 1)**0.5 + (1145)))<= 0 and (x-460+clearance) >= 0:
+                display_surface.set_at((x,y), RED)
+
+            # Equations for boundary using half-plane method
+            if(x-clearance) <= 0 or (x+clearance) >= 600 or (y-clearance) <= 0 or (y+clearance) >= 250:
+                display_surface.set_at((x,y), RED)
+
          # Drawing Unscaled Obstacles ie. without clearance
 
             # Equations for rectangle1 using half-plane method
             if (x >= 100 and x <= 150) and (y >= 0 and y <= 100):
-                display_surface.set_at((x,y), RED)
+                display_surface.set_at((x,y), WHITE)
             
             # Equations for rectangle2 using half-plane method
             if (x >= 100 and x <= 150) and (y >= 150 and y <= 250):
-                display_surface.set_at((x,y), RED)
+                display_surface.set_at((x,y), WHITE)
 
             # Equations for hexagon using half-plane method
             if (y-(0.578*x)-(-123.21))>= 0 and (y-(-0.578*x)-(373.21))<= 0 and (y-(0.578*x)-(26.79))<= 0 and (y-(-0.578*x)-(223.21))>= 0 and (x-235) >= 0 and (x-365) <= 0:
-                display_surface.set_at((x,y), RED)
+                display_surface.set_at((x,y), WHITE)
 
             # Equations for triangle using half-plane method
             if (y-(2*x)-(-895))>= 0 and (y-(-2*x)-(1145))<= 0 and (x-460) >= 0:
-                display_surface.set_at((x,y), RED)
+                display_surface.set_at((x,y), WHITE)
 
     pygame.display.update()
 
@@ -88,7 +111,7 @@ def UserInput(obstacle_map):
         print("\nThe start point is inside an obstacle. Please enter a valid start point.")
 
     start.append(start_x)
-    start.append(250-start_y)
+    start.append(start_y)
     start.append(start_theta*30)
     
     while True:
@@ -109,7 +132,7 @@ def UserInput(obstacle_map):
         print("\nThe goal point is inside an obstacle. Please enter a valid goal point.")
     
     goal.append(goal_x)
-    goal.append(250-goal_y)
+    goal.append(goal_y)
     goal.append(goal_theta*30)
 
     step_size= int(input("\nEnter the desired step size for the robot between 1 and 10: "))
@@ -207,13 +230,13 @@ def ActionMoveN60(node, obstacle_map, step_size, Visited):
     else:
         return None, False
 
-def CheckGoal(node, goal, start, obstacle_map, ClosedList, start_time):
-    if math.dist([node[0],node[1]],[goal[0],goal[1]]) < 1.5:
+def CheckGoal(node, goal, start, obstacle_map, ClosedList, start_time, step_size):
+    if math.dist([node[0],node[1]],[goal[0],goal[1]]) < 1.5 and (node[2] == goal[2]):
         print("\n\033[92;5m" + "*****  Goal Reached!  *****" + "\033[0m")
         end_time = time.time()
         time_taken = round(end_time - start_time, 2)
         print("\n\033[92m" + "Time taken: " + str(time_taken) + " seconds" + "\033[0m")
-        Backtrack(start, node, ClosedList, obstacle_map)
+        Backtrack(start, node, ClosedList, obstacle_map, step_size)
         return True
     else:
         return False
@@ -234,7 +257,7 @@ def CheckNode(node_new, ClosedList, OpenList, current_node, step_size, goal, boo
         else:
             hq.heappush(OpenList, [current_node[3] + step_size + math.dist([node_new[0],node_new[1]],[goal[0],goal[1]]), current_node[2], node_new,current_node[3] + step_size,math.dist([node_new[0],node_new[1]],[goal[0],goal[1]])])
 
-def Backtrack(start, goal, ClosedList, obstacle_map):
+def Backtrack(start, goal, ClosedList, obstacle_map,step_size):
     args = argument_parser()
     video = vidmaker.Video("DijkstraPlanner_pygame.mp4", late_export=True)
     path = []
@@ -244,7 +267,14 @@ def Backtrack(start, goal, ClosedList, obstacle_map):
         if key == (start[0],start[1]):
             continue
         else:
-            obstacle_map.set_at((int(key[0]),int(key[1])),(255,255,255))
+            if key != (goal[0],goal[1]):
+                for i in [0,30,60,300,330]:
+                    i = (i + key[2]) % 360
+                    x = int(key[0]+step_size*np.cos(np.deg2rad(i)))
+                    y = int(250 - key[1] + step_size*np.sin(np.deg2rad(i)))
+                    if (y >= 0) and (y <= 250) and (x >= 0) and (x <= 600) and (obstacle_map.get_at((int(x),pygame.Surface.get_height(obstacle_map) - int(y)))[2] != 0):
+                        pygame.draw.aaline(obstacle_map, (0,255,255), (key[0],250 - key[1]), (x,y), 1)
+                        pygame.time.wait(1)
             if args.save_video:
                 video.update(pygame.surfarray.pixels3d(obstacle_map).swapaxes(0, 1), inverted=False)
             pygame.display.update()
@@ -253,7 +283,14 @@ def Backtrack(start, goal, ClosedList, obstacle_map):
         path.append(current_node)
     path.reverse()
     for i in range(len(path)):
-        obstacle_map.set_at((int(path[i][0]),int(path[i][1])),(255,0,0))
+        for j in [0,30,60,300,330]:
+                j = (j + key[2]) % 360
+                x = int(path[i][0]+step_size*np.cos(np.deg2rad(j)))
+                y = int(250 - path[i][1] + step_size*np.sin(np.deg2rad(j)))
+                if (y >= 0) and (y <= 250) and (x >= 0) and (x <= 600) and (obstacle_map.get_at((int(x),pygame.Surface.get_height(obstacle_map) - int(y)))[2] != 0):
+                    pygame.draw.aaline(obstacle_map, (0,0,255), (path[i][0],250 - path[i][1]), (x,y), 1)
+        if i != 0:
+            pygame.draw.aaline(obstacle_map, (255,255,255), (path[i-1][0],250 - path[i-1][1]), (path[i][0],250 - path[i][1]), 1)
         if args.save_video:
             video.update(pygame.surfarray.pixels3d(obstacle_map).swapaxes(0, 1), inverted=False)
         pygame.display.update()
@@ -284,9 +321,7 @@ def AStarPlanner(start, goal, obstacle_map, step_size):
     while (len(OpenList) > 0):
         current_node = hq.heappop(OpenList)
         ClosedList[(current_node[2][0],current_node[2][1],current_node[2][2])] =  current_node[1]
-        # obstacle_map.set_at((int(current_node[2][0]),int(current_node[2][1])),(255,255,255))
-        # pygame.display.update()
-        if CheckGoal(current_node[2], goal, start, obstacle_map, ClosedList, start_time) == True:
+        if CheckGoal(current_node[2], goal, start, obstacle_map, ClosedList, start_time, step_size) == True:
             # print("\n\033[92m" + "OpenList Length: " + str(len(OpenList)) + " seconds" + "\033[0m\n")
             flag = True
             break
