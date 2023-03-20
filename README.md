@@ -78,4 +78,6 @@ https://user-images.githubusercontent.com/61658557/226221978-e169c7ad-4b6a-4e8d-
 
 https://user-images.githubusercontent.com/61658557/226221986-35014175-20e2-4697-974e-a0c0b745bb71.mp4
 
-### Terminal output of Test Case 4![A*Planner_Test_Case4](https://user-images.githubusercontent.com/61658557/226221996-e42c87a8-b99c-4f53-b9c3-0f5ede717a9d.png)
+### Terminal output of Test Case 4
+
+![A*Planner_Test_Case4](https://user-images.githubusercontent.com/61658557/226222089-e646a761-c67d-4f90-8387-71694f4c8e2f.png)
