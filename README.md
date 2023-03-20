@@ -64,16 +64,18 @@ python3 a_star_sanchit_tanmay.py --save_video # Use this command to run the proj
   - Radius: 5
   - START NODE: (550,125,0)
   - GOAL NODE: (430,230,0)
-  - Step size: 10
+  - Step size: 5
 
-### Video of vizualization of Task 1 in pygame
+### Video of vizualization of Test Case 1 in pygame
 
+https://user-images.githubusercontent.com/61658557/226221975-0393bb61-ddd9-4a8d-b8d8-c88066c0fb8e.mp4
 
-### Video of vizualization of Task 2 in pygame
+### Video of vizualization of Test Case 2 in pygame
 
+https://user-images.githubusercontent.com/61658557/226221978-e169c7ad-4b6a-4e8d-8acd-815d39b2658f.mp4
 
-### Video of vizualization of Task 3 in pygame
+### Video of vizualization of Test Case 3 in pygame
 
+https://user-images.githubusercontent.com/61658557/226221986-35014175-20e2-4697-974e-a0c0b745bb71.mp4
 
-### Terminal output of Task 4
-
+### Terminal output of Test Case 4![A*Planner_Test_Case4](https://user-images.githubusercontent.com/61658557/226221996-e42c87a8-b99c-4f53-b9c3-0f5ede717a9d.png)
